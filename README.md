@@ -11,7 +11,7 @@ Clasificadores:
 
     SVM     Support vector machines
     LDA     Linear discriminant analisys
-    DT      Desition tree classifier
+    DT      Desicion tree classifier
   
   
 Se extraen las caracteristicas de la señal de voz (utilizando varios parámetros en el cálculo de las características) se entrenan los modelos. Posteriormente se mide el rendimiento de los modelos con el conjunto de prueba.
