@@ -17,7 +17,7 @@ def create_txt_all_file(file_name):
 	f = open(file_name,"w+")
 	f.write(header)
 	f.close()
-	return(None)
+	return None
 
 def add_register_txt_all_file(txt_file, num_clases, train_set_size, test_set_size, param_list, training_time, metrics_str, classifier, feature):
     
@@ -35,7 +35,7 @@ def add_register_txt_all_file(txt_file, num_clases, train_set_size, test_set_siz
 	f = open(txt_file,"a")
 	f.write(register)
 	f.close()
-	return(None)
+	return None
 
 
 def metricas(y, y_hat, num_class):
@@ -63,7 +63,7 @@ def metricas(y, y_hat, num_class):
 	recall    = float(np.sum(recall_list))/num_class
 	f1        = (2*precision*recall)/(precision+recall)
 
-	return(accuracy, precision, recall, f1)
+	return accuracy, precision, recall, f1
 ###################################################################################################################################################
 ###################################################################################################################################################
 def set_model(model):
@@ -85,7 +85,7 @@ def set_model(model):
 	metrics_str             = test_metrics_str +","+ train_metrics_str    
     
 	add_register_txt_all_file(txt_file_path, num_clases, train_set_size_str, test_set_size_str, param_list, training_time, metrics_str, 'svm', feature)
-
+    return None
 
 def run_model(train_path_list, test_path_list, param_list, txt_file_path, feature):
 	#SVM parametros
@@ -178,8 +178,7 @@ def run_model(train_path_list, test_path_list, param_list, txt_file_path, featur
     
 	add_register_txt_all_file(txt_file_path, num_clases, train_set_size_str, test_set_size_str, param_list, training_time, metrics_str, 'decision_tree', feature)    
 
-
-	return(None)
+	return None
 
 def model_search_svm_mfcc(train_path_list, test_path_list, mfcc_param_list, txt_file):
     
@@ -216,7 +215,7 @@ def model_search_svm_mfcc(train_path_list, test_path_list, mfcc_param_list, txt_
 		train_set_size_str = str(int(train_set.shape[0]/len(train_path_list)))
 		add_register_txt_file(txt_file, train_set_size_str, kern, svm_param_list, mfcc_param_list, training_time, metrics_str)
 		
-	return(None)
+	return None
 ###################################################################################################################################################
 ###################################################################################################################################################
 
