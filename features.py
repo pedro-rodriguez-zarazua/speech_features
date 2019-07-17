@@ -88,11 +88,11 @@ def mel_filter_bank_spectrum(pow_frames, fbank):
     return filter_banks
 
 def discrete_cosine_transform(filter_banks, num_ceps=12):
-	dc_transform = dct(filter_banks, type=2, axis=1, norm='ortho')[:, 1 : (num_ceps + 1)] # Keep 2 - num_ceps+1
-	return dc_transform
+    dc_transform = dct(filter_banks, type=2, axis=1, norm='ortho')[:, 1 : (num_ceps + 1)] # Keep 2 - num_ceps+1
+    return dc_transform
 
 def liftering(mfccs, cep_lifter):
-    (nframes, ncoeff) = mfccs.shape
+    nframes, ncoeff = mfccs.shape
     n = np.arange(ncoeff)
     lift = 1 + (cep_lifter / 2) * np.sin(np.pi * n / cep_lifter)
     mfccs *= lift
@@ -127,39 +127,39 @@ def mfb(signal_path, pre_emph_coeff = 0.97, frame_size_time = 0.025, frame_hop_t
     return mfb_spectrum
 
 def mfcc(signal_path, pre_emph_coeff = 0.97, frame_size_time = 0.025, frame_hop_time = 0.01, nfilt = 40, num_ceps = 12, cep_lifter = 22, deltas = 0, mfb = ''):
-	if(mfb == ''):
-		signal, sample_rate = load_file(signal_path)
-		pre_emph            = pre_emphasis(signal, pre_emph_coeff)
-		frame_size          = time_to_samples(frame_size_time, sample_rate)
-		frame_hop           = time_to_samples(frame_hop_time,  sample_rate)
-		frames              = framing(pre_emph, frame_size, frame_hop)
-		nfft                = calculate_nfft(frames.shape[1])
-		pow_spect           = power_spectrum(frames, nfft)
-		mfb                 = mel_filter_bank(sample_rate, nfilt, nfft)
-		mfb_spectrum        = mel_filter_bank_spectrum(pow_spect, mfb)
-	else:
-		mfb_spectrum        = mfb
+    if(mfb == ''):
+        signal, sample_rate = load_file(signal_path)
+        pre_emph            = pre_emphasis(signal, pre_emph_coeff)
+        frame_size          = time_to_samples(frame_size_time, sample_rate)
+        frame_hop           = time_to_samples(frame_hop_time,  sample_rate)
+        frames              = framing(pre_emph, frame_size, frame_hop)
+        nfft                = calculate_nfft(frames.shape[1])
+        pow_spect           = power_spectrum(frames, nfft)
+        mfb                 = mel_filter_bank(sample_rate, nfilt, nfft)
+        mfb_spectrum        = mel_filter_bank_spectrum(pow_spect, mfb)
+    else:
+        mfb_spectrum        = mfb
 
-	mfcc = discrete_cosine_transform(mfb_spectrum, num_ceps)
+    mfcc = discrete_cosine_transform(mfb_spectrum, num_ceps)
     
-	if(cep_lifter > 0):
-		mfcc  = liftering(mfcc, cep_lifter)
+    if(cep_lifter > 0):
+        mfcc  = liftering(mfcc, cep_lifter)
     
-	if(deltas == 0):
-		coeffs  = mfcc
-	elif(deltas == 1):
-		coeffs  = delta(mfcc)
-	elif(deltas == 2):
-		coeffs  = d_delta(mfcc)
-	else:
-		raise ValueError('Error en el valor de Deltas, no soporta valores mayores a 2.')
-	return coeffs
+    if(deltas == 0):
+        coeffs  = mfcc
+    elif(deltas == 1):
+        coeffs  = delta(mfcc)
+    elif(deltas == 2):
+        coeffs  = d_delta(mfcc)
+    else:
+        raise ValueError('Error en el valor de Deltas, no soporta valores mayores a 2.')
+    return coeffs
 #######################################################################################################
 def lpc_to_cepstral(coeffs,n=13):
     c      = np.zeros([len(coeffs),n])
     c[:,0] = np.log(coeffs.shape[1])
     c[:,1] = coeffs[:,0]
-    
+
     for i in range(2,coeffs.shape[1]):
         c[:,i] += coeffs[:,i - 1]
         for j in range(1,i):
@@ -170,12 +170,12 @@ def lpc_to_cepstral(coeffs,n=13):
     return c
 
 def lpc_coeffs(frames, orden_p):
-	lpc = np.zeros([frames.shape[0], orden_p])
-	G   = np.zeros(frames.shape[0])
-	for i in range(lpc.shape[0]):
-		#print('fit vector ' + str(i) + ' ...')
-		lpc[i], G[i] = lpc_fit(frames[i], orden_p)
-	return lpc, G
+    lpc = np.zeros([frames.shape[0], orden_p])
+    G   = np.zeros(frames.shape[0])
+    for i in range(lpc.shape[0]):
+        #print('fit vector ' + str(i) + ' ...')
+        lpc[i], G[i] = lpc_fit(frames[i], orden_p)
+    return lpc, G
 
 def lpc_fit(serie, p=10):
     ac  = autocorr(serie, p+1)
@@ -190,24 +190,24 @@ def gain(autocorr, coeffs):
     return G
 
 def autocorr(serie, lag=10):
-	c    = np.correlate(serie, serie, 'full')
-	mid  = len(c)//2
-	acov = c[mid:mid+lag]
-	acor = acov/acov[0]
-	return acor
+    c    = np.correlate(serie, serie, 'full')
+    mid  = len(c)//2
+    acov = c[mid:mid+lag]
+    acor = acov/acov[0]
+    return acor
 #######################################################################################################
 #LPC
 def lpc(signal_path, pre_emph_coeff = 0.97, frame_size_time = 0.025, frame_hop_time = 0.01, orden_p = 10, gain = 0):
-	signal, sample_rate = load_file(signal_path)
-	pre_emph            = pre_emphasis(signal, pre_emph_coeff)
-	frame_size          = time_to_samples(frame_size_time, sample_rate)
-	frame_hop           = time_to_samples(frame_hop_time,  sample_rate)
-	frames              = framing(pre_emph, frame_size, frame_hop)
-	lpc, G              = lpc_coeffs(frames, orden_p)
-	if(gain == 1):
-		G = G[:, np.newaxis]
-		lpc = np.concatenate((lpc,G),axis=1)
-	elif(gain > 1):
-		raise ValueError('Error en el valor de gain, solo toma valores 0 o 1')
-	return lpc
+    signal, sample_rate = load_file(signal_path)
+    pre_emph            = pre_emphasis(signal, pre_emph_coeff)
+    frame_size          = time_to_samples(frame_size_time, sample_rate)
+    frame_hop           = time_to_samples(frame_hop_time,  sample_rate)
+    frames              = framing(pre_emph, frame_size, frame_hop)
+    lpc, G              = lpc_coeffs(frames, orden_p)
+    if(gain == 1):
+        G = G[:, np.newaxis]
+        lpc = np.concatenate((lpc,G),axis=1)
+    elif(gain > 1):
+        raise ValueError('Error en el valor de gain, solo toma valores 0 o 1')
+    return lpc
 

@@ -234,55 +234,55 @@ dt_param_list    = [min_samples_split,min_samples_leaf]
 
 num_iterations = 30
 for iteration in range(0, num_iterations):
-	start = time.time()
-	print('iteracion ' + str(iteration) + ' de ' + str(num_iterations))
+    start = time.time()
+    print('iteracion ' + str(iteration) + ' de ' + str(num_iterations))
 	
-	"""
-	if(iteration%2==0):
-		FEATURE = 'mfb'
-	else:
-		FEATURE = 'mfcc'
-	"""
-	FEATURE = 'lpc'
+    """
+    if(iteration%2==0):
+        FEATURE = 'mfb'
+    else:
+        FEATURE = 'mfcc'
+    """
+    FEATURE = 'lpc'
 
-	pre_emph_coeff  = 0.85 + random.randint(0,14)*0.01
-	frame_size_time = 0.5  + random.randint(0,10)*0.1
-	frame_hop_time  = 0.05 + random.randint(0,11)*0.01
+    pre_emph_coeff  = 0.85 + random.randint(0,14)*0.01
+    frame_size_time = 0.5  + random.randint(0,10)*0.1
+    frame_hop_time  = 0.05 + random.randint(0,11)*0.01
 
-	if(FEATURE == 'mfb'):
-		#MFB parametros
-		nfilt           = random.randint(25,50)
+    if(FEATURE == 'mfb'):
+        #MFB parametros
+        nfilt           = random.randint(25,50)
 		
 	
-		param_list  = [pre_emph_coeff, frame_size_time, frame_hop_time, nfilt]
-		print('pre_emph = ' + str(param_list[0]) + ', ' + 'window = ' + str(param_list[1]) + ', ' + 'hop = ' + str(param_list[2]) + ', ' + 'nfilt = ' + 	str(param_list[3]))
+        param_list  = [pre_emph_coeff, frame_size_time, frame_hop_time, nfilt]
+        print('pre_emph = ' + str(param_list[0]) + ', ' + 'window = ' + str(param_list[1]) + ', ' + 'hop = ' + str(param_list[2]) + ', ' + 'nfilt = ' + 	str(param_list[3]))
 
 
-	elif(FEATURE == 'mfcc'):
-		#MFCC parametros
-		nfilt           = random.randint(25,50)
-		num_ceps        = random.randint(12,nfilt-1)
-		cep_lifter      = random.randint(0,20)
-		deltas          = random.randint(0,2)
+    elif(FEATURE == 'mfcc'):
+        #MFCC parametros
+        nfilt           = random.randint(25,50)
+        num_ceps        = random.randint(12,nfilt-1)
+        cep_lifter      = random.randint(0,20)
+        deltas          = random.randint(0,2)
 	
-		param_list  = [pre_emph_coeff, frame_size_time, frame_hop_time, nfilt, num_ceps, cep_lifter, deltas]
-		print('pre_emph = ' + str(param_list[0]) + ', ' + 'window = ' + str(param_list[1]) + ', ' + 'hop = ' + str(param_list[2]) + ', ' + 'nfilt = ' + str(param_list[3]) + ', ' + 'ceps = ' + str(param_list[4]) + ', ' + 'lift = ' + str(param_list[5]) + ', ' + 'deltas = ' + str(param_list[06]))
+        param_list  = [pre_emph_coeff, frame_size_time, frame_hop_time, nfilt, num_ceps, cep_lifter, deltas]
+        print('pre_emph = ' + str(param_list[0]) + ', ' + 'window = ' + str(param_list[1]) + ', ' + 'hop = ' + str(param_list[2]) + ', ' + 'nfilt = ' + str(param_list[3]) + ', ' + 'ceps = ' + str(param_list[4]) + ', ' + 'lift = ' + str(param_list[5]) + ', ' + 'deltas = ' + str(param_list[06]))
 
 
-	elif(FEATURE == 'lpc'):
-		#LPC parametros
-		order           = random.randint(5,20)
-		gain            = random.randint(0,1)
+    elif(FEATURE == 'lpc'):
+        #LPC parametros
+        order           = random.randint(5,20)
+        gain            = random.randint(0,1)
 	
-		param_list   = [pre_emph_coeff, frame_size_time, frame_hop_time, order, gain]
-		print('pre_emph = ' + str(param_list[0]) + ', ' + 'window = ' + str(param_list[1]) + ', ' + 'hop = ' + str(param_list[2]) + ', ' + 'order = ' + str(param_list[3]) + ', ' + 'gain = ' + str(param_list[4]))
+        param_list   = [pre_emph_coeff, frame_size_time, frame_hop_time, order, gain]
+        print('pre_emph = ' + str(param_list[0]) + ', ' + 'window = ' + str(param_list[1]) + ', ' + 'hop = ' + str(param_list[2]) + ', ' + 'order = ' + str(param_list[3]) + ', ' + 'gain = ' + str(param_list[4]))
 	
 	
-	modelos.run_model(train_path_list, test_path_list, param_list, txt_file_path, FEATURE)
-	end                 = time.time()
-	iteration_time       = str(end - start)
+    modelos.run_model(train_path_list, test_path_list, param_list, txt_file_path, FEATURE)
+    end                 = time.time()
+    iteration_time       = str(end - start)
 
-	print('iteration time = ' + str(iteration_time))
-	print('******************************************************************')
+    print('iteration time = ' + str(iteration_time))
+    print('******************************************************************')
 
 
