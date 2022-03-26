@@ -187,6 +187,9 @@ user03 = [sp3_00,sp3_01,sp3_02,sp3_03,sp3_04,sp3_05,sp3_06,sp3_07,sp3_08,sp3_09,
 user04 = [sp4_00,sp4_01,sp4_02,sp4_03,sp4_04,sp4_05,sp4_06,sp4_07,sp4_08,sp4_09,sp4_10,sp4_11,sp4_12,sp4_13,sp4_14,sp4_15,sp4_16,sp4_17,sp4_18,sp4_19,
 				sp4_20,sp4_21,sp4_22,sp4_23,sp4_24,sp4_25,sp4_26,sp4_27,sp4_28,sp4_29,sp4_30,sp4_31,sp4_32,sp4_33,sp4_34,sp4_35,sp4_36,sp4_37,sp4_38,sp4_39,sp4_40]
 
+
+
+
 corte = 25
 fin =   30
 user01_train = user01[:corte]
