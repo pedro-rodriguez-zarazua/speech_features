@@ -12,3 +12,5 @@ audio, sr = features.load_file(sp1_00)
 emph = features.pre_emphasis(audio)
 frames = features.framing(emph)
 print(frames.shape)
+
+#hello piter
